@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# kill running process of mongod
+if [ -z $(ps -ef | grep mongod | awk '{ if ($8 ~/mongod.*/) print $2}') ];
+then
+    echo "no running mongod found"
+else
+    echo "killing running mongod"
+    kill -9 $(ps -ef | grep mongod | awk '{ if ($8 ~/mongod.*/) print $2}')
+fi

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# start new mongod in background
+mongod --fork --logpath ./mongod.log $1
