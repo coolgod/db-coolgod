@@ -8,8 +8,15 @@
 - `./mongod/stop`: stop any running mongod daemon
 
 ## Database
-- `./scripts/init.js`
-  - create database user (first time running)
+- `./scripts/init.js` (mongod w/o auth)
+  - create database user with superuser roles
+  - create database user for service access
   - create database
-- `./scripts/annihilate.js`
-  - **wipe out all existing database content including the user associated**
+- `./scripts/annihilate.js` (mongod w/ auth)
+  - **wipe out all existing database content including the user associated (using superuser account)**
+
+## Manual Step (First Time Deployment)
+- start MongoDB daemon w/o auth
+- run script to init users, database, etc.
+- stop MongoDB
+- start MongoDB daemon w/ auth
