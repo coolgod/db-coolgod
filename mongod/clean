@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-# delete existing log files
-echo "removing log files"
-rm -f ./mongod.log
-

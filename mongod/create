@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+if [ "$1" = "" -o "$2" = "" ]; then
+    echo "need 2 arguments"
+    exit 1
+fi
+
+DB_ROOT="$(pwd)/.db"
+CREDENTIAL_ROOT="$(pwd)/.credentials"
+
+source "$(pwd)/mongod/config"
+
+if [ ! -d "$DB_ROOT" ]; then
+    mkdir $DB_ROOT
+fi
+
+chmod -R 777 $DB_ROOT
+
+# mount /data/db (in container) ---> $DB_ROOT
+# write mongod log to $DB_ROOT
+# create user with "root" access to mongodb
+docker run -d -p 27017:27017 -v "$DB_ROOT:/data/db" --name $DB_CONTAINER_NAME -e MONGO_INITDB_ROOT_USERNAME=$1 -e MONGO_INITDB_ROOT_PASSWORD=$2 mongo --logpath "/data/db/mongod.log"
+
+if [ ! -d "$CREDENTIAL_ROOT" ]; then
+    mkdir $CREDENTIAL_ROOT
+fi
+
+echo "$1:$(echo $2 | base64)" > "$CREDENTIAL_ROOT/root"

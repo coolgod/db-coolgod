@@ -1,1 +1,2 @@
-mongod.log*
+.db/**
+.credential/**

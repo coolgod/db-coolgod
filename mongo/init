@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# dbname, username, password
+if [ "$1" = "" -o "$2" = "" -o "$3" = "" ]; then
+    echo "need 3 arguments"
+    exit 1
+fi
+
+# root_username, root_password
+root_username=$(awk 'BEGIN{FS=":"}{ print $1 }' "$(pwd)/.credentials/root")
+root_password=$(echo $(awk 'BEGIN{FS=":"}{ print $2 }' "$(pwd)/.credentials/root") | base64 --decode)
+
+# create database and user
+mongo --eval \
+   "var dbname='$1', username='$2', password='$3', root_username='$root_username', root_password='$root_password'" \
+   "$(pwd)/mongo/scripts/init.js"
+
+# write credential to disk
+echo "$1=$2:$(echo $3 | base64)" > "$(pwd)/.credentials/$1"
