@@ -2,9 +2,4 @@
 
 source "$(pwd)/mongod/config"
 
-auth=""
-if [ "$1" = "--auth" ]; then
-    auth=$1
-fi
-
 docker start $(docker ps -q -a -f name=$DB_CONTAINER_NAME)
