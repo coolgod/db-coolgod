@@ -1,4 +1,8 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -x
+
+source "$(pwd)/mongod/config"
+
+SCRIPT_PATH="$(pwd)/mongo/scripts/init.js"
 
 # dbname, username, password
 if [ "$1" = "" -o "$2" = "" -o "$3" = "" ]; then
@@ -11,9 +15,14 @@ root_username=$(awk 'BEGIN{FS=":"}{ print $1 }' "$(pwd)/.credentials/root")
 root_password=$(echo $(awk 'BEGIN{FS=":"}{ print $2 }' "$(pwd)/.credentials/root") | base64 --decode)
 
 # create database and user
-mongo --eval \
-   "var dbname='$1', username='$2', password='$3', root_username='$root_username', root_password='$root_password'" \
-   "$(pwd)/mongo/scripts/init.js"
+docker run -v "$SCRIPT_PATH:$SCRIPT_PATH" \
+--rm \
+-it \
+--link $DB_CONTAINER_NAME:mongo \
+mongo \
+mongo --host mongo --eval \
+"var dbname='$1', username='$2', password='$3', root_username='$root_username', root_password='$root_password'" \
+$SCRIPT_PATH
 
 # write credential to disk
 echo "$1=$2:$(echo $3 | base64)" > "$(pwd)/.credentials/$1"

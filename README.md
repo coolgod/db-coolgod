@@ -23,3 +23,4 @@
 
 ## TODO
 - [ ] `mongo/init`失败时，不要生成credential
+- [ ] 移除deprecated的docker的`--link`用法

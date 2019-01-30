@@ -1,6 +1,6 @@
 // set up connection
 print('connecting to mongod');
-conn = new Mongo('localhost:27017');
+conn = new Mongo('mongo:27017');
 
 // get "admin" database for verification
 print('connecting to admin');
