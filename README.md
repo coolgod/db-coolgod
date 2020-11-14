@@ -15,7 +15,7 @@ This repository contains a bunch of shell and javascript utilities for my person
 - It creates root user for MongoDB databases with `<root_username>` and `<root_password>`
 - The [mongod](https://docs.mongodb.com/manual/reference/program/mongod/) is started with `--auth`.
 - The database root on disk is mounted to `.db`
-- `<root_username>` and `<root_password>` will be stored in `.crendentials/root`, **make sure to keep them to yourself!**
+- `<root_username>` and `<root_password>` will be stored in `.crendentials/root`, **keep them at a safe place!**
 
 ### Stop mongod
 ```
@@ -28,16 +28,14 @@ This repository contains a bunch of shell and javascript utilities for my person
 ```
 
 ## Database
-- `./mongo/init <dbname> <username> <password>`
-  - create database with the name of `<dbname>`
-  - create database user `<username>` and password `<password>` for service access, read/write permissions assigned
-  - all crendentials will be stored in under `./credentials` folder
 
-## Manual Steps
-- ssh into EC2 instance to install docker engine
-- first time db deployment
-  - start MongoDB daemon container and create root user and password: `./mongod/create` 
-  - run script to init users, database: `./mongo/init`
+### Initialize database
+```
+./mongo/init <dbname> <username> <password>
+```
+- This creates a MongoDB database with the name of `<dbname>`
+- Your service can connect to the database with user name `<username>` and password `<password>`, read and write permissions are allowed.
+- All crendentials will be stored in `./credentials/<dbname>`, **keep them at a safe place!**
 
 ## TODO
 - [ ] `mongo/init`失败时，不要生成credential
