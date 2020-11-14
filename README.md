@@ -1,13 +1,31 @@
-> This repository contains a bunch of shell and javascript utilities for my personal website database deployment. They're all based on docker engine and MongoDB. They are mostly used to start a mongod daemon with authentication, and do some initilization work for the first time deployment. I didn't make them to be part of a CICD pipeline because most of the database setup will not really be repetitive and CICD is mostly for the front-end and back-end service development.
+This repository contains a bunch of shell and javascript utilities for my personal website database deployment. They're all based on docker engine and MongoDB. They are mostly used to start a mongod daemon with authentication, and do some initilization work for the first time deployment. I didn't make them to be part of a CICD pipeline because most of the database setup will not really be repetitive and CICD is mostly for the front-end and back-end service development.
 
-## MongoDB Daemon (Running in Docker Container)
-- `./mongod/create <root_username> <root_password>`
-  - start mongod daemon in a **new container** with container name defined in `./mongod/config`
-  - create root user for the database with `<root_username>` and `<root_password>`
-  - the mongod daemon is started with `--auth` turned on by default in this way
-  - the username and password will be stored in `.crendentials/root` in current folder, **make sure not to expose the file to anyone else**
-- `./mongod/start`: start mongod daemon tied to an existing stopped container
-- `./mongod/stop`: stop mongod daemon tied to an existing running container (also stop the docker container)
+## Prerequisites
+- docker environment (the `docker` CLI command should work)
+- configure docker container name (for MongoDB daemon) in `./mongd/config`
+
+## MongoDB Daemon
+
+### Start mongod in a new docker container
+```
+./mongod/create <root_username> <root_password>
+```
+
+- This will start mongod daemon in a **new** container.
+- It creates root user for MongoDB databases with `<root_username>` and `<root_password>`
+- The [mongod](https://docs.mongodb.com/manual/reference/program/mongod/) is started with `--auth`.
+- The database root on disk is mounted to `.db`
+- `<root_username>` and `<root_password>` will be stored in `.crendentials/root`, **make sure to keep them to yourself!**
+
+### Stop mongod
+```
+./mongod/stop
+```
+
+### Restart mongod
+```
+./mongod/start
+```
 
 ## Database
 - `./mongo/init <dbname> <username> <password>`
